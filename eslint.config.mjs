@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs']
+    ignores: ['eslint.config.mjs'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -15,14 +15,14 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest
+        ...globals.jest,
       },
       sourceType: 'commonjs',
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname
-      }
-    }
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
   },
   {
     rules: {
@@ -32,17 +32,17 @@ export default tseslint.config(
       'prettier/prettier': [
         'warn',
         {
-          arrowParens: 'always',
+          singleQuote: true,
+          trailingComma: 'all',
           semi: false,
-          trailingComma: 'none',
+          arrowParens: 'always',
           tabWidth: 2,
           endOfLine: 'auto',
           useTabs: false,
-          singleQuote: true,
           printWidth: 120,
-          jsxSingleQuote: true
-        }
-      ]
-    }
-  }
+          jsxSingleQuote: true,
+        },
+      ],
+    },
+  },
 )
