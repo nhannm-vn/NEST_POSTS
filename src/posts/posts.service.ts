@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
-
+//Nơi viết business logic (xử lý dữ liệu, kết nối DB...).
+//Thường được đánh dấu @Injectable() để NestJS có thể inject vào controller.
 @Injectable()
 export class PostsService {
   getPosts(): string {
@@ -7,5 +8,11 @@ export class PostsService {
   }
   createPost(body: any) {
     return body
+  }
+  getPost(id: string) {
+    return `Post ${id}`
+  }
+  updatePost(id: string, body: any) {
+    return `Update post ${id}`
   }
 }
