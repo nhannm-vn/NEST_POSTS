@@ -15,4 +15,7 @@ export class PostsService {
   updatePost(id: string, body: any) {
     return `Update post ${id}`
   }
+  deletePost(id: string) {
+    return `Delete post ${id}`
+  }
 }

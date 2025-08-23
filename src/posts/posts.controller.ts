@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { PostsService } from './posts.service'
 
 //Nơi nhận request từ client (HTTP request).
 @Controller('posts')
 export class PostsController {
   //Kiến trúc DI giúp flexible đưa dữ liệu từ ngoài vào
+  //Dependency
   constructor(private readonly postsService: PostsService) {}
   @Get()
   getPosts() {
@@ -22,5 +23,9 @@ export class PostsController {
   @Put(':id')
   updatePost(@Param('id') id: string, @Body() body: any) {
     return this.postsService.updatePost(id, body)
+  }
+  @Delete(':id')
+  deletePost(@Param('id') id: string) {
+    return this.postsService.deletePost(id)
   }
 }
