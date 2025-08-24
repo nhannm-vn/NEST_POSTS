@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  //output   = "../generated/prisma"
 }
 
 datasource db {
@@ -42,3 +42,14 @@ model RefreshToken {
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
+
+//*Thí dụ muốn cập nhật schema và muốn trường đó trên db cũng mất luôn thì chạy(nghĩa là apply vào db):
+//npx prisma db push
+//*Câu lệnh trên khác với npx prisma migrate dev ở chỗ sẽ tạo thêm folder migrate và reset dữ liệu
+//*Câu lệnh: npx prisma generate
+//Tạo ra type cho prisma client (hay còn gọi là artifacts)
+
+//*Cách tránh migrate:
+//Thêm một schema vào User thì mặc định thằng đó là require bắt buộc có dữ liệu
+//--> mình sẽ cho nó một cái default value để không lỗi sau đó 
+//chạy lệnh npx prisma generate để cho nó đồng nhất
