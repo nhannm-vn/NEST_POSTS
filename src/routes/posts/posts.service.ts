@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 //Nơi viết business logic (xử lý dữ liệu, kết nối DB...).
 //Thường được đánh dấu @Injectable() để NestJS có thể inject vào controller.
 @Injectable()
-export class PostsService {
+export class postsService {
   getPosts(): string {
     return 'All posts'
   }
