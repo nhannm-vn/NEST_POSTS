@@ -1,13 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/shared/services/prisma.service'
 //Nơi viết business logic (xử lý dữ liệu, kết nối DB...).
 //Thường được đánh dấu @Injectable() để NestJS có thể inject vào controller.
 @Injectable()
-export class postsService {
-  getPosts(): string {
-    return 'All posts'
+export class PostsService {
+  constructor(private readonly prismaService: PrismaService) {}
+  getPosts() {
+    return this.prismaService.post.findMany()
   }
   createPost(body: any) {
-    return body
+    const userId = 1
+    return this.prismaService.post.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        authorId: userId,
+      },
+    })
   }
   getPost(id: string) {
     return `Post ${id}`
