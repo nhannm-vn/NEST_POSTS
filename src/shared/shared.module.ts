@@ -12,3 +12,11 @@ const sharedServices = [PrismaService]
   exports: sharedServices,
 })
 export class SharedModule {}
+
+/*
+@Global() giúp biến module đó thành global module 
+→ tất cả service mà nó export ra sẽ dùng được ở mọi module khác mà không 
+cần import module thủ công nữa.
+*/
+
+//Mình xài prisma nên mặc định không cần cài dotenv thì vẫn đọc được
