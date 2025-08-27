@@ -1,9 +1,10 @@
 import { Global, Module } from '@nestjs/common'
 import { PrismaService } from './services/prisma.service'
+import { HashingService } from './services/hashing.service'
 //File này mình sẽ để chế độ global cho toàn app thấy được luôn
 //mình sẽ import services vào đây
 
-const sharedServices = [PrismaService]
+const sharedServices = [PrismaService, HashingService]
 
 @Global()
 @Module({
@@ -18,5 +19,3 @@ export class SharedModule {}
 → tất cả service mà nó export ra sẽ dùng được ở mọi module khác mà không 
 cần import module thủ công nữa.
 */
-
-//Mình xài prisma nên mặc định không cần cài dotenv thì vẫn đọc được
