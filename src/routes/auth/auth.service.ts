@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { HashingService } from 'src/shared/services/hashing.service'
 import { PrismaService } from 'src/shared/services/prisma.service'
+import { RegisterBodyDTO } from './auth.dto'
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
   ) {}
   //**register phải dùng async vì nó gọi đến các hàm bất đồng bộ
   //**dùng async-await thì dùng try-catch
-  async register(body: any) {
+  async register(body: RegisterBodyDTO) {
     try {
       //hash password trước khi lưu vào db
       const hashedPassword = await this.hashingService.hash(body.password)

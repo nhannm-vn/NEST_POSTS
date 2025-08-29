@@ -25,6 +25,12 @@ export class RegisterResDTO {
   name: string
   @Exclude()
   password: string
+
+  // @Expose()
+  // get fullName(): string {
+  //   return `${this.email} - ${this.name}`
+  // }
+
   createdAt: Date
   updatedAt: Date
   constructor(partial: Partial<RegisterResDTO>) {
