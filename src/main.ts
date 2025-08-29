@@ -12,14 +12,19 @@ async function bootstrap() {
       //trong dto thì sẽ báo lỗi khi client truyền lên
       transform: true, //Tự động chuyển hóa kiểu dữ liệu obj theo class khai báo trong dto
       transformOptions: {
-        enableImplicitConversion: true, //Tự động chuyển dữ liệu theo decorator
+        enableImplicitConversion: true, //Tự động chuyển dữ liệu theo decorator, truyền lên number => string
       },
       exceptionFactory: (validationErrors) => {
+        //Custom message là cái mảng chứa các obj
+        //có field và error rõ ràng
         return new UnprocessableEntityException(
+          //Đi qua cái mảng lỗi và custom thành các obj hợp lí cho message
           validationErrors.map((error) => {
             return {
               field: error.property,
               //Object.values: lấy toàn bộ value và trả dưới dạng mảng
+              //nghĩa là lấy value của key trong obj. Ta được cái mảng
+              //sau đó nối lại bằng dấu ,
               error: Object.values(error.constraints as any).join(', '),
             }
           }),
