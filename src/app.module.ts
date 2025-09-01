@@ -13,6 +13,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core'
     AppService,
     {
       //Khai báo này toàn dự án thì bên controller không cần nữa
+      //áp dụng cho serialzation
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
     },

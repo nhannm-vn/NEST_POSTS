@@ -4,7 +4,7 @@ import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  //Nghĩa là bạn bật validation toàn cục cho toàn bộ ứng dụng NestJS.
+  //Nghĩa là bạn bật validation toàn cục cho toàn bộ ứng dụng NestJS. để sử dụng dto validation data
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, //Tự động loại bỏ các field không được khai báo decorator trong DTO
