@@ -13,6 +13,7 @@ const sharedServices = [PrismaService, HashingService, TokenService]
   providers: sharedServices,
   //đối với thằng shared global cần thêm cái exports
   exports: sharedServices,
+  //Cần import vì thằng thư viện JwtModule được xem như một module
   imports: [JwtModule],
 })
 export class SharedModule {}

@@ -19,6 +19,15 @@ export class RegisterBodyDTO extends LoginBodyDTO {
 }
 
 //Serialization
+export class LoginResDTO {
+  accessToken: string
+  refreshToken: string
+
+  constructor(partial: Partial<LoginResDTO>) {
+    Object.assign(this, partial)
+  }
+}
+
 export class RegisterResDTO {
   id: number
   email: string
