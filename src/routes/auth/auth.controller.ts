@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { RegisterBodyDTO, RegisterResDTO } from './auth.dto'
+import { LoginBodyDTO, RegisterBodyDTO, RegisterResDTO } from './auth.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -14,5 +14,10 @@ export class AuthController {
     console.log('controller...')
     //*Vì mình serialization nên cần await để chờ dữ liệu
     return new RegisterResDTO(await this.authService.register(body))
+  }
+
+  @Post('login')
+  login(@Body() body: LoginBodyDTO) {
+    return 'login success'
   }
 }
