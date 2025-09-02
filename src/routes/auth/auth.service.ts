@@ -3,12 +3,14 @@ import { Prisma } from '@prisma/client'
 import { HashingService } from 'src/shared/services/hashing.service'
 import { PrismaService } from 'src/shared/services/prisma.service'
 import { LoginBodyDTO, RegisterBodyDTO } from './auth.dto'
+import { TokenService } from 'src/shared/services/token.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly hashingService: HashingService,
     private readonly prismaService: PrismaService,
+    private readonly tokenService: TokenService,
   ) {}
   //**register phải dùng async vì nó gọi đến các hàm bất đồng bộ
   //**dùng async-await thì dùng try-catch
@@ -58,8 +60,19 @@ export class AuthService {
           },
         ])
       }
+
+      const tokens = await this.generateTokens({ userId: user.id })
+      return tokens
     } catch (error) {
       console.log(error)
     }
+  }
+
+  async generateTokens(payload: { userId: number }) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.tokenService.signAccessToken(payload),
+      this.tokenService.signRefreshToken(payload),
+    ])
+    return { accessToken, refreshToken }
   }
 }
