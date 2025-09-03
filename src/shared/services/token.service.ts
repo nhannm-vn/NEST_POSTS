@@ -12,6 +12,7 @@ export class TokenService {
       secret: envConfig.ACCESS_TOKEN_SECRET,
       expiresIn: envConfig.ACCESS_TOKEN_EXPIRES_IN,
       algorithm: 'HS256',
+      jwtid: crypto.randomUUID(),
     })
   }
 
@@ -20,6 +21,10 @@ export class TokenService {
       secret: envConfig.REFRESH_TOKEN_SECRET,
       expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN,
       algorithm: 'HS256',
+      //đảm bảo hai thiết bị của cùng một người dùng không thể tạo ra hai
+      //token giống hệt nhau, ngay cả khi chúng gửi yêu cầu trong cùng một giây.
+      //tóm lại giúp refresh_token tạo ra unique
+      jwtid: crypto.randomUUID(),
     })
   }
 
