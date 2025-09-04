@@ -85,4 +85,30 @@ export class AuthService {
 
     return { accessToken, refreshToken }
   }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      //1. Kiểm tra token có đúng và hợp lệ hay không
+      const { userId } = await this.tokenService.verifyRefreshToken(refreshToken)
+      //2. Kiểm tra refreshToken có tồn tại trong database không
+      //findUniqueOrThrow: thằng này khi có lỗi sẽ throw ra lỗi còn thằng findUnique
+      //chỉ return về null
+      await this.prismaService.refreshToken.findUniqueOrThrow({
+        where: {
+          token: refreshToken,
+        },
+      })
+      //3. Tiến hành xóa token cũ
+      await this.prismaService.refreshToken.delete({
+        where: {
+          token: refreshToken,
+        },
+      })
+      //4. Tiến hành tạo mới access_token và refresh_token
+      return await this.generateTokens({ userId: userId })
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
 }
