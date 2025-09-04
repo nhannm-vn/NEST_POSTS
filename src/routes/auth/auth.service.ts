@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import { HashingService } from 'src/shared/services/hashing.service'
 import { PrismaService } from 'src/shared/services/prisma.service'
 import { LoginBodyDTO, RegisterBodyDTO } from './auth.dto'
 import { TokenService } from 'src/shared/services/token.service'
+import { isNotFoundPrismaError, isUniqueConstraintPrismaError } from 'src/shared/helpers'
 
 @Injectable()
 export class AuthService {
@@ -29,7 +29,7 @@ export class AuthService {
       return user
     } catch (error) {
       //NestJS đã có sẵn ConflictException (HTTP 409) để báo lỗi trùng dữ liệu.
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      if (isUniqueConstraintPrismaError(error)) {
         throw new ConflictException('Email already exists')
       }
       //500
@@ -109,7 +109,7 @@ export class AuthService {
     } catch (error) {
       //Trường hợp đã refreshToken rồi hãy thông báo cho user biết
       //refreshToken đã bị đánh cắp (nghĩa là refreshToken của họ không còn trong db)
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      if (isNotFoundPrismaError(error)) {
         throw new UnauthorizedException('Refresh token has been revoked')
       }
       //Dành cho các lỗi chung chung
