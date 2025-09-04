@@ -107,8 +107,13 @@ export class AuthService {
       //4. Tiến hành tạo mới access_token và refresh_token
       return await this.generateTokens({ userId: userId })
     } catch (error) {
-      console.log(error)
-      throw error
+      //Trường hợp đã refreshToken rồi hãy thông báo cho user biết
+      //refreshToken đã bị đánh cắp (nghĩa là refreshToken của họ không còn trong db)
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        throw new UnauthorizedException('Refresh token has been revoked')
+      }
+      //Dành cho các lỗi chung chung
+      throw new UnauthorizedException()
     }
   }
 }
