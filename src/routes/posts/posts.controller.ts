@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 import { PostsService } from './posts.service'
+import { APIKeyGuard } from 'src/shared/guards/api-key.guard'
+import { AccessTokenGuard } from 'src/shared/guards/access-token.guard'
 
 //Nơi nhận request từ client (HTTP request).
 @Controller('posts')
@@ -7,6 +9,8 @@ export class PostsController {
   //Kiến trúc DI giúp flexible đưa dữ liệu từ ngoài vào
   //Dependency
   constructor(private readonly postsService: PostsService) {}
+  @UseGuards(AccessTokenGuard)
+  @UseGuards(APIKeyGuard)
   @Get()
   getPosts() {
     return this.postsService.getPosts()
