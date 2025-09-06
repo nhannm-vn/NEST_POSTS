@@ -16,22 +16,19 @@ export class AccessTokenGuard implements CanActivate {
   constructor(private readonly tokenService: TokenService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>()
-
+    //Lấy ra accessToken
     const accessToken = request.headers.authorization?.split(' ')[1]
-
     //Sau khi kiểm tra xem có accessToken không. Nếu chưa thì không cho đi qua
     if (!accessToken) {
       throw new UnauthorizedException('Access token missing')
       // return false
     }
-
     try {
       //Verify accessToken
       const decodedAccessToken = await this.tokenService.verifyAccessToken(accessToken)
-      // Lưu payload vào request để controller chuyển đi tiếp
-      //thường thì ngta lưu vào thuộc tính user
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // Lưu payload vào request để controller chuyển đi tiếp thường thì ngta lưu vào thuộc tính user
       request[REQUEST_USER_KEY] = decodedAccessToken
+      // Nghĩa là sẽ cho qua
       return true
     } catch {
       throw new UnauthorizedException('Invalid or expired access token')

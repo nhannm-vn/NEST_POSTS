@@ -22,6 +22,8 @@ class ConfigSchema {
   @IsString()
   DATABASE_URL: string
   @IsString()
+  SECRET_API_KEY: string
+  @IsString()
   ACCESS_TOKEN_SECRET: string
   @IsString()
   ACCESS_TOKEN_EXPIRES_IN: string
