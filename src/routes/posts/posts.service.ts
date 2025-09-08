@@ -10,8 +10,8 @@ export class PostsService {
   getPosts() {
     return this.prismaService.post.findMany()
   }
-  createPost(body: any) {
-    const userId = 1
+
+  createPost(userId: number, body: any) {
     return this.prismaService.post.create({
       data: {
         title: body.title,
@@ -20,12 +20,15 @@ export class PostsService {
       },
     })
   }
+
   getPost(id: string) {
     return `Post ${id}`
   }
+
   updatePost(id: string, body: any) {
     return `Update post ${id}`
   }
+
   deletePost(id: string) {
     return `Delete post ${id}`
   }
