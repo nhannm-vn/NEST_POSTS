@@ -3,6 +3,7 @@ import { PostsService } from './posts.service'
 import { Auth } from 'src/shared/decorators/auth.decorator'
 import { AuthType, ConditionGuard } from 'src/shared/constants/auth.constant'
 import { ActiveUser } from 'src/shared/decorators/active-user.decorator'
+import { GetPostItemDTO } from './post.dto'
 // import { AuthenticationGuard } from 'src/shared/guards/authentication.guard'
 
 //Nơi nhận request từ client (HTTP request).
@@ -17,8 +18,8 @@ export class PostsController {
   //Khai báo global rồi nên không cần
   // @UseGuards(AuthenticationGuard)
   @Get()
-  getPosts() {
-    return this.postsService.getPosts()
+  getPosts(@ActiveUser('userId') userId: number) {
+    return this.postsService.getPosts(userId).then((posts) => posts.map((post) => new GetPostItemDTO(post)))
   }
 
   @Auth([AuthType.Bearer])
