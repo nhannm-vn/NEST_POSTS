@@ -94,7 +94,20 @@ export class PostsService {
     }
   }
 
-  deletePost(id: number) {
-    return `Delete post ${id}`
+  async deletePost({ postId, userId }: { postId: number; userId: number }) {
+    try {
+      await this.prismaService.post.delete({
+        where: {
+          id: postId,
+          authorId: userId,
+        },
+      })
+      return true
+    } catch (error) {
+      if (isNotFoundPrismaError(error)) {
+        throw new NotFoundException('Post not found')
+      }
+      throw error
+    }
   }
 }

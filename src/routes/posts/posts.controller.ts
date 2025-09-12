@@ -50,8 +50,12 @@ export class PostsController {
     )
   }
 
+  @Auth([AuthType.Bearer])
   @Delete(':id')
-  deletePost(@Param('id') id: string) {
-    return this.postsService.deletePost(Number(id))
+  deletePost(@Param('id') id: string, @ActiveUser('userId') userId: number): Promise<boolean> {
+    return this.postsService.deletePost({
+      postId: Number(id),
+      userId,
+    })
   }
 }
