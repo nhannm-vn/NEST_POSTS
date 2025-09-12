@@ -29,6 +29,13 @@ export class PostsService {
         title: body.title,
         content: body.content,
         authorId: userId,
+      }, // Lay luon array user
+      include: {
+        author: {
+          omit: {
+            password: true,
+          },
+        },
       },
     })
   }

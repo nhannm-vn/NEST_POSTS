@@ -24,8 +24,8 @@ export class PostsController {
 
   @Auth([AuthType.Bearer])
   @Post()
-  createPost(@Body() body: CreatePostBodyDTO, @ActiveUser('userId') userId: number) {
-    return this.postsService.createPost(userId, body)
+  async createPost(@Body() body: CreatePostBodyDTO, @ActiveUser('userId') userId: number) {
+    return new GetPostItemDTO(await this.postsService.createPost(userId, body))
   }
 
   @Get(':id')
