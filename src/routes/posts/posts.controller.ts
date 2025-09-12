@@ -34,13 +34,24 @@ export class PostsController {
     return new GetPostItemDTO(await this.postsService.getPost(Number(id)))
   }
 
+  @Auth([AuthType.Bearer])
   @Put(':id')
-  async updatePost(@Param('id') id: string, @Body() body: UpdatePostBodyDTO) {
-    return new GetPostItemDTO(await this.postsService.updatePost(Number(id), body))
+  async updatePost(
+    @Param('id') id: string,
+    @Body() body: UpdatePostBodyDTO, //
+    @ActiveUser('userId') userId: number,
+  ) {
+    return new GetPostItemDTO(
+      await this.postsService.updatePost({
+        postId: Number(id),
+        userId,
+        body,
+      }),
+    )
   }
 
   @Delete(':id')
   deletePost(@Param('id') id: string) {
-    return this.postsService.deletePost(id)
+    return this.postsService.deletePost(Number(id))
   }
 }

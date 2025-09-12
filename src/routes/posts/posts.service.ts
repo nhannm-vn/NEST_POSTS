@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/shared/services/prisma.service'
 import { UpdatePostBodyDTO } from './post.dto'
+import { isNotFoundPrismaError } from 'src/shared/helpers'
 //Nơi viết business logic (xử lý dữ liệu, kết nối DB...).
 //Thường được đánh dấu @Injectable() để NestJS có thể inject vào controller.
 @Injectable()
@@ -57,26 +58,35 @@ export class PostsService {
     })
   }
 
-  updatePost(postId: number, body: UpdatePostBodyDTO) {
-    return this.prismaService.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        title: body.title,
-        content: body.content,
-      },
-      include: {
-        author: {
-          omit: {
-            password: true,
+  async updatePost({ postId, userId, body }: { postId: number; userId: number; body: UpdatePostBodyDTO }) {
+    try {
+      const post = await this.prismaService.post.update({
+        where: {
+          id: postId,
+          authorId: userId,
+        },
+        data: {
+          title: body.title,
+          content: body.content,
+        },
+        include: {
+          author: {
+            omit: {
+              password: true,
+            },
           },
         },
-      },
-    })
+      })
+      return post
+    } catch (error) {
+      if (isNotFoundPrismaError(error)) {
+        throw new NotFoundException('Post not found')
+      }
+      throw error
+    }
   }
 
-  deletePost(id: string) {
+  deletePost(id: number) {
     return `Delete post ${id}`
   }
 }
