@@ -21,3 +21,5 @@ export class CreatePostBodyDTO {
   @IsString()
   content: string
 }
+
+export class UpdatePostBodyDTO extends CreatePostBodyDTO {}

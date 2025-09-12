@@ -3,7 +3,7 @@ import { PostsService } from './posts.service'
 import { Auth } from 'src/shared/decorators/auth.decorator'
 import { AuthType, ConditionGuard } from 'src/shared/constants/auth.constant'
 import { ActiveUser } from 'src/shared/decorators/active-user.decorator'
-import { CreatePostBodyDTO, GetPostItemDTO } from './post.dto'
+import { CreatePostBodyDTO, GetPostItemDTO, UpdatePostBodyDTO } from './post.dto'
 // import { AuthenticationGuard } from 'src/shared/guards/authentication.guard'
 
 //Nơi nhận request từ client (HTTP request).
@@ -34,10 +34,10 @@ export class PostsController {
     return new GetPostItemDTO(await this.postsService.getPost(Number(id)))
   }
 
-  // @Put(':id')
-  // updatePost(@Param('id') id: string, @Body() body: any) {
-  //   return this.postsService.updatePost(id, body)
-  // }
+  @Put(':id')
+  async updatePost(@Param('id') id: string, @Body() body: UpdatePostBodyDTO) {
+    return new GetPostItemDTO(await this.postsService.updatePost(Number(id), body))
+  }
 
   @Delete(':id')
   deletePost(@Param('id') id: string) {
