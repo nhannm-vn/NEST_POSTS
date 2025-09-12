@@ -42,20 +42,28 @@ export class PostsService {
     })
   }
 
-  getPost(postId: number) {
-    return this.prismaService.post.findUniqueOrThrow({
-      where: {
-        id: postId,
-      },
-      // Lay luon array user
-      include: {
-        author: {
-          omit: {
-            password: true,
+  async getPost(postId: number) {
+    try {
+      const post = await this.prismaService.post.findUniqueOrThrow({
+        where: {
+          id: postId,
+        },
+        // Lay luon array user
+        include: {
+          author: {
+            omit: {
+              password: true,
+            },
           },
         },
-      },
-    })
+      })
+      return post
+    } catch (error) {
+      if (isNotFoundPrismaError(error)) {
+        throw new NotFoundException('Post item not found')
+      }
+      throw error
+    }
   }
 
   async updatePost({ postId, userId, body }: { postId: number; userId: number; body: UpdatePostBodyDTO }) {
