@@ -30,14 +30,14 @@ export class PostsController {
 
   @Get(':id')
   //Lấy id bằng decorator Param
-  getPost(@Param('id') id: string) {
-    return this.postsService.getPost(id)
+  async getPost(@Param('id') id: number) {
+    return new GetPostItemDTO(await this.postsService.getPost(Number(id)))
   }
 
-  @Put(':id')
-  updatePost(@Param('id') id: string, @Body() body: any) {
-    return this.postsService.updatePost(id, body)
-  }
+  // @Put(':id')
+  // updatePost(@Param('id') id: string, @Body() body: any) {
+  //   return this.postsService.updatePost(id, body)
+  // }
 
   @Delete(':id')
   deletePost(@Param('id') id: string) {

@@ -40,13 +40,25 @@ export class PostsService {
     })
   }
 
-  getPost(id: string) {
-    return `Post ${id}`
+  getPost(postId: number) {
+    return this.prismaService.post.findUniqueOrThrow({
+      where: {
+        id: postId,
+      },
+      // Lay luon array user
+      include: {
+        author: {
+          omit: {
+            password: true,
+          },
+        },
+      },
+    })
   }
 
-  updatePost(id: string, body: any) {
-    return `Update post ${id}`
-  }
+  // updatePost(id: string, body: any) {
+  //   return `Update post ${id}`
+  // }
 
   deletePost(id: string) {
     return `Delete post ${id}`
