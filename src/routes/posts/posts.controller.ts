@@ -3,7 +3,7 @@ import { PostsService } from './posts.service'
 import { Auth } from 'src/shared/decorators/auth.decorator'
 import { AuthType, ConditionGuard } from 'src/shared/constants/auth.constant'
 import { ActiveUser } from 'src/shared/decorators/active-user.decorator'
-import { GetPostItemDTO } from './post.dto'
+import { CreatePostBodyDTO, GetPostItemDTO } from './post.dto'
 // import { AuthenticationGuard } from 'src/shared/guards/authentication.guard'
 
 //Nơi nhận request từ client (HTTP request).
@@ -24,7 +24,7 @@ export class PostsController {
 
   @Auth([AuthType.Bearer])
   @Post()
-  createPost(@Body() body: any, @ActiveUser('userId') userId: number) {
+  createPost(@Body() body: CreatePostBodyDTO, @ActiveUser('userId') userId: number) {
     return this.postsService.createPost(userId, body)
   }
 
